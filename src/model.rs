@@ -1,14 +1,15 @@
+use std::collections::HashMap;
+use std::{fs, io};
 
-mod teeline_dict {
-    use std::collections::HashMap;
-    use std::{fs, io};
+type Longhand = String;
+type Shorthand = String; // the path to the img file
 
-    type Longhand = String;
-    type Shorthand = String; // the path to the img file
-    type TeelineDict = HashMap<Longhand, Shorthand>;
-
-    pub fn load(location: String) -> Result<TeelineDict, io::Error> {
-        let mut dict : TeelineDict = TeelineDict::new();
+pub struct TeelineDict {
+    dict: HashMap<Longhand, Shorthand>
+}
+impl TeelineDict {
+    pub fn new(location: String) -> TeelineDict {
+        let mut dict = HashMap::new();
         // open the path location
         let paths = fs::read_dir(location)?;
 
@@ -30,7 +31,9 @@ mod teeline_dict {
                 }
             }
         }
-        Ok(dict)
+        TeelineDict {
+            dict
+        }
     }
 
     pub fn add(lh: Longhand, sh: Shorthand) {
