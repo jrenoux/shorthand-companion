@@ -1,9 +1,12 @@
 use eframe::egui;
 use eframe::Frame;
 use egui::*;
+use crate::add_new_word_window::AddNewWordWindow;
 use crate::model::teeline_dict::TeelineDict;
 use crate::teeline_dict;
 use crate::teeline_dict::Longhand;
+use crate::add_new_word_window;
+
 
 #[derive(Default)]
 pub struct TeelineApp {
@@ -11,6 +14,7 @@ pub struct TeelineApp {
     dict: TeelineDict,
     selected: Option<Longhand>,
     searched: String,
+    add_edit_word_window: AddNewWordWindow
 }
 
 impl TeelineApp {
@@ -24,6 +28,7 @@ impl TeelineApp {
                 dict: tl_dict,
                 selected: None,
                 searched: "".to_string(),
+                add_edit_word_window: AddNewWordWindow::default()
             }}
             Err(_) => {todo!()}
         }
@@ -32,6 +37,13 @@ impl TeelineApp {
 
     fn show_search_bar(&mut self, ui: &mut Ui) {
         ui.add(egui::TextEdit::singleline(&mut self.searched).hint_text("Search"));
+    }
+
+    fn show_word_management_bar(&mut self, ctx: &egui::Context, ui: &mut Ui) {
+        // contains buttons to add new words, edit, delete words
+        if(ui.add(egui::Button::new("Add")).clicked()) {
+            self.add_edit_word_window.activate()
+        };
     }
 
     fn add_word_list(&mut self, ui: &mut Ui) {
@@ -94,7 +106,8 @@ impl TeelineApp {
 impl eframe::App for TeelineApp{
     fn update(&mut self, ctx: &Context, frame: &mut Frame) {
         egui::containers::TopBottomPanel::top("my_top_panel").show(ctx, |ui| {
-           self.show_search_bar(ui)
+            self.show_search_bar(ui);
+            self.show_word_management_bar(ctx, ui);
         });
         // Put the list of words on the left paner
         SidePanel::left("Test side panel").show(ctx, |ui| {
@@ -104,6 +117,10 @@ impl eframe::App for TeelineApp{
         CentralPanel::default().show(ctx, |ui| {
             self.show_shorthand(ui);
         });
+
+        // show the various additional windows. Whether they are active or not is covered in their implementation
+        self.add_edit_word_window.show(ctx);
+
     }
 
 }

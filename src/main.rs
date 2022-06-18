@@ -5,7 +5,7 @@ use crate::app::TeelineApp;
 
 mod model;
 mod app;
-
+mod add_new_word_window;
 
 
 fn main() {
