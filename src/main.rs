@@ -1,5 +1,7 @@
+use std::io::Error;
 use eframe::{NativeOptions, run_native};
-use crate::app::TeelineDict;
+use crate::model::teeline_dict;
+use crate::app::TeelineApp;
 
 mod model;
 mod app;
@@ -7,7 +9,6 @@ mod app;
 
 
 fn main() {
-    let app: TeelineDict = TeelineDict;
     let options = NativeOptions::default();
-    run_native(Box::new(app), options);
+    run_native("TeeLine Dictionary", options, Box::new(|cc| Box::new(TeelineApp::new(cc))));
 }
