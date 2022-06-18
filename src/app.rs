@@ -1,7 +1,6 @@
 use eframe::egui;
 use eframe::Frame;
 use egui::*;
-use image::ImageError;
 use crate::model::teeline_dict::TeelineDict;
 use crate::teeline_dict;
 use crate::teeline_dict::Longhand;
@@ -11,6 +10,7 @@ pub struct TeelineApp {
     location: String,
     dict: TeelineDict,
     selected: Option<Longhand>,
+    searched: String,
 }
 
 impl TeelineApp {
@@ -23,18 +23,33 @@ impl TeelineApp {
                 location: loc,
                 dict: tl_dict,
                 selected: None,
+                searched: "".to_string(),
             }}
             Err(_) => {todo!()}
         }
 
     }
 
+    fn show_search_bar(&mut self, ui: &mut Ui) {
+        ui.add(egui::TextEdit::singleline(&mut self.searched).hint_text("Search"));
+    }
+
     fn add_word_list(&mut self, ui: &mut Ui) {
         // load all the words with one label for each
+        // if self.searched is Some(_), only load the words that contain the searched text
         for item in &self.dict {
-            if ui.add(SelectableLabel::new(false, item.0)).clicked() {
-               self.selected = Some(item.0.to_string());
-            }
+                if self.searched.eq("") {
+                    if ui.add(SelectableLabel::new(false, item.0)).clicked() {
+                        self.selected = Some(item.0.to_string());
+                    }
+                }
+                else {
+                    if item.0.contains(&self.searched) {
+                        if ui.add(SelectableLabel::new(false, item.0)).clicked() {
+                            self.selected = Some(item.0.to_string());
+                        }
+                    }
+                }
         }
     }
 
@@ -78,10 +93,14 @@ impl TeelineApp {
 
 impl eframe::App for TeelineApp{
     fn update(&mut self, ctx: &Context, frame: &mut Frame) {
+        egui::containers::TopBottomPanel::top("my_top_panel").show(ctx, |ui| {
+           self.show_search_bar(ui)
+        });
         // Put the list of words on the left paner
         SidePanel::left("Test side panel").show(ctx, |ui| {
             self.add_word_list(ui);
         });
+
         CentralPanel::default().show(ctx, |ui| {
             self.show_shorthand(ui);
         });
