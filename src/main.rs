@@ -7,9 +7,11 @@ mod model;
 mod app;
 mod add_new_word_window;
 mod painting;
+mod utils;
+mod canvas;
 
 
 fn main() {
     let options = NativeOptions::default();
-    run_native("TeeLine Dictionary", options, Box::new(|cc| Box::new(TeelineApp::new(cc))));
+    run_native("Shorthand Dictionary", options, Box::new(|cc| Box::new(TeelineApp::new(cc))));
 }

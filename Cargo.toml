@@ -9,9 +9,10 @@ edition = "2021"
 
 [dependencies]
 egui = "*"
-eframe = { version = "*", features = ["persistence"] }
+eframe = { version = "0.18.0", features = ["persistence"] }
 serde = { version = "1", features = ["derive"] } # You only need this if you want app persistence
 image = "*"
+rfd = "0.10.0"
 
 [profile.release]
 opt-level = 2 # fast and small wasm

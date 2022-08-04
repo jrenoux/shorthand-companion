@@ -6,6 +6,8 @@ use crate::model::teeline_dict::TeelineDict;
 use crate::teeline_dict;
 use crate::teeline_dict::Longhand;
 use crate::add_new_word_window;
+use crate::utils;
+
 
 
 #[derive(Default)]
@@ -24,11 +26,11 @@ impl TeelineApp {
         let my_dict = teeline_dict::load(&loc);
         match my_dict {
             Ok(tl_dict) => {TeelineApp {
-                location: loc,
+                location: loc.clone(),
                 dict: tl_dict,
                 selected: None,
                 searched: "".to_string(),
-                add_edit_word_window: AddNewWordWindow::default()
+                add_edit_word_window: AddNewWordWindow::new(loc.clone())
             }}
             Err(_) => {todo!()}
         }
@@ -75,31 +77,16 @@ impl TeelineApp {
                 let path = format!("{}/{}.png", &self.location, longhand);
 
                 // and display it here
-                let image_result = &self.load_image_from_path(&std::path::Path::new(path.as_str()));
-                let image = match image_result {
-                    Ok(image) => { image.clone() }
-                    Err(_) => {todo!()}
-                };
-
-                let texture = ui.ctx().load_texture(path, image);
-
-                let img_size = 160.0 * texture.size_vec2() / texture.size_vec2().y;
-                ui.image(&texture, img_size);
+                let texture = utils::load_image_texture(&path, ui);
+                match texture {
+                    Ok(t) => {
+                        let img_size = 160.0 * t.size_vec2() / t.size_vec2().y;
+                        ui.image(&t, img_size);}
+                    Err(_) => {todo!();}
+                }
             }
         };
     }
-
-    fn load_image_from_path(&self, path: &std::path::Path) -> Result<egui::ColorImage, image::ImageError> {
-        let image = image::io::Reader::open(path)?.decode()?;
-        let size = [image.width() as _, image.height() as _];
-        let image_buffer = image.to_rgba8();
-        let pixels = image_buffer.as_flat_samples();
-        Ok(egui::ColorImage::from_rgba_unmultiplied(
-            size,
-            pixels.as_slice(),
-        ))
-    }
-
 }
 
 

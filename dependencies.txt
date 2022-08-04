@@ -1,0 +1,2 @@
+On Ubuntu:
+  - libgtk-3-dev
