@@ -1,12 +1,12 @@
-pub mod teeline_dict {
+pub mod shorthand_dict {
     use std::collections::{BTreeMap, HashMap};
     use std::{fs, io};
     use std::path::Path;
 
     pub type Longhand = String;
     pub type Shorthand = String; // the path to the img file
-    pub type TeelineDict = BTreeMap<Longhand, Shorthand>;
-    pub fn load(location: &String) -> Result<TeelineDict, io::Error> {
+    pub type ShorthandDict = BTreeMap<Longhand, Shorthand>;
+    pub fn load(location: &String) -> Result<ShorthandDict, io::Error> {
         let mut dict = BTreeMap::new();
         // open the path location
         let paths = fs::read_dir(location)?;
@@ -38,10 +38,10 @@ pub mod teeline_dict {
 #[cfg(test)]
 mod test {
     use std::path::Path;
-    use crate::model::teeline_dict;
+    use crate::model::shorthand_dict;
     #[test]
     fn test_load() {
-        let tl_dict = teeline_dict::load(&"test/resources/load".to_string()).unwrap();
+        let tl_dict = shorthand_dict::load(&"test/resources/load".to_string()).unwrap();
         assert_eq!(3, tl_dict.len());
         // test each option
         let sh_told = Path::new("test/resources/load/told.png");

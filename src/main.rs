@@ -1,7 +1,7 @@
 use std::io::Error;
 use eframe::{NativeOptions, run_native};
-use crate::model::teeline_dict;
-use crate::app::TeelineApp;
+use crate::model::shorthand_dict;
+use crate::app::ShorthandApp;
 
 mod model;
 mod app;
@@ -13,5 +13,5 @@ mod canvas;
 
 fn main() {
     let options = NativeOptions::default();
-    run_native("Shorthand Dictionary", options, Box::new(|cc| Box::new(TeelineApp::new(cc))));
+    run_native("Shorthand Dictionary", options, Box::new(|cc| Box::new(ShorthandApp::new(cc))));
 }

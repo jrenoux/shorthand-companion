@@ -2,30 +2,31 @@ use eframe::egui;
 use eframe::Frame;
 use egui::*;
 use crate::add_new_word_window::AddNewWordWindow;
-use crate::model::teeline_dict::TeelineDict;
-use crate::teeline_dict;
-use crate::teeline_dict::Longhand;
+use crate::model::shorthand_dict::ShorthandDict;
+use crate::shorthand_dict;
+use crate::shorthand_dict::Longhand;
 use crate::add_new_word_window;
 use crate::utils;
 
 
 
 #[derive(Default)]
-pub struct TeelineApp {
+pub struct ShorthandApp {
     location: String,
-    dict: TeelineDict,
+    dict: ShorthandDict,
     selected: Option<Longhand>,
     searched: String,
     add_edit_word_window: AddNewWordWindow
 }
 
-impl TeelineApp {
+impl ShorthandApp {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // TODO change this to actual loading screen
         let loc = "test/resources/load".to_string();
-        let my_dict = teeline_dict::load(&loc);
+        let my_dict = shorthand_dict::load(&loc);
         match my_dict {
-            Ok(tl_dict) => {TeelineApp {
+            Ok(tl_dict) => {
+                ShorthandApp {
                 location: loc.clone(),
                 dict: tl_dict,
                 selected: None,
@@ -90,7 +91,7 @@ impl TeelineApp {
 }
 
 
-impl eframe::App for TeelineApp{
+impl eframe::App for ShorthandApp {
     fn update(&mut self, ctx: &Context, frame: &mut Frame) {
         egui::containers::TopBottomPanel::top("my_top_panel").show(ctx, |ui| {
             self.show_search_bar(ui);
