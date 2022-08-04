@@ -112,6 +112,7 @@ impl AddNewWordWindow {
                     }
                     if !self.missing_longhand && !self.missing_shorthand {
                         // save the image
+                        // TODO what is the expect for?
                         self.save_shorthand().expect("TODO: panic message");
 
                         self.reset_window();
