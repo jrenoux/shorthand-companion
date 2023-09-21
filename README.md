@@ -1,2 +1,2 @@
-# teeline-dictionary
-This is a tee-line dictionary in Rust using egui
+# Shorthand Companion
+This is an app to help you learn shorthand, written in Rust using egui

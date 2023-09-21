@@ -13,5 +13,5 @@ mod canvas;
 
 fn main() {
     let options = NativeOptions::default();
-    run_native("Shorthand Dictionary", options, Box::new(|cc| Box::new(ShorthandApp::new(cc))));
+    run_native("Shorthand Companion", options, Box::new(|cc| Box::new(ShorthandApp::new(cc))));
 }

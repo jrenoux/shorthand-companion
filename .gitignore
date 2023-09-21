@@ -16,4 +16,5 @@ Cargo.lock
 
 #IDEA files
 .idea
+**/*.iml
 
